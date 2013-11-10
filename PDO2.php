@@ -1,27 +1,22 @@
 <?php
 
 /**
- * Change PDO to have better constructing defaults
- * and to include some executing helpers.
+ * Augment PDO with some executing helpers.
  */
-class PDO2 extends PDO
+class PDO2
 {
+    private $pdo;
 
-    /**
-     * Construct PDO with healthier defaults:
-     *
-     *   - MYSQL_INIT_COMMAND to "SET NAMES 'UTF8'" if charset param not in DSN
-     *   - ATTR_ERRMODE to ERRMODE_EXCEPTION
-     *   - ATTR_DEFAULT_FETCH_MODE to FETCH_OBJ
-     */
-    public function __construct($dsn, $username = '', $password = '', array $driver_options = array())
+    public function __construct(PDO $pdo)
     {
-        if (preg_match('/^mysql/i', $dsn) && !preg_match('/;charset=/', $dsn) && !isset($driver_options[PDO::MYSQL_ATTR_INIT_COMMAND])) {
-            $driver_options[PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES 'UTF8'";
-        }
-        parent::__construct($dsn, $username, $password, $driver_options);
+        $this->pdo = $pdo;
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+    }
+
+    public function __call($name, $arguments)
+    {
+        return call_user_func_array(array($this->pdo, $name), $arguments);
     }
 
     /**

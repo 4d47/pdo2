@@ -5,7 +5,7 @@ class PDO2Test extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->db = new PDO2('sqlite::memory:');
+        $this->db = new PDO2(new PDO('sqlite::memory:'));
         $this->db->exec("
             CREATE TABLE actors (
                 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
