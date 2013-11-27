@@ -47,6 +47,11 @@ class PDO2Test extends PHPUnit_Framework_TestCase
         $this->db->count('not_found');
     }
 
+    public function testPdoIsAccessible()
+    {
+        $this->assertInstanceOf('PDO', $this->db->pdo);
+    }
+
     public function testSelect()
     {
         $this->assertEquals(3, count($this->db->select('actors')->fetchAll()));
