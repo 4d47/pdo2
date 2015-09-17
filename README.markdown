@@ -35,7 +35,7 @@ $db->select('actors', ['a' => 1, [['b' => 2], ['c' => 3]]])
 3. **insert**($table, array $params) : [PDOStatement](http://php.net/manual/en/class.pdostatement.php)
 
 ```php
-$db->insert('actors', ['first_name' => 'Humphrey', 'last_name' => 'Bogart', 'age' => 62]);
+$db->insert('actors', ['first_name' => 'Humphrey', 'last_name' => 'Bogart', 'age' => 57]);
 ```
 
 4. **update**($table, array $params, array $where) : [PDOStatement](http://php.net/manual/en/class.pdostatement.php)
