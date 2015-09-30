@@ -157,15 +157,17 @@ class PDO2
     {
         if (empty($params)) {
             return '';
-        } else if (is_array($params) and $this->isAssoc($params)) {
+        } else if ($this->isAssoc($params)) {
             $clauses = array();
             foreach ($params as $name => $param) {
                 if (is_numeric($name)) {
                     if ($param) {
                         $clauses[] = '(' . $this->expr($param, $values) . ')';
                     }
+                } else if (is_null($param)) {
+                    $clauses[] = $this->buildClause($name, ' IS') . ' NULL';
                 } else {
-                    $clauses[] = strpos($name, ' ') === false ? "$name = ?" : $name;
+                    $clauses[] = $this->buildClause($name, ' = ?');
                     $values[] = $param;
                 }
             }
@@ -179,6 +181,11 @@ class PDO2
             }
             return implode(' OR ', $clauses);
         }
+    }
+
+    private function buildClause($name, $defaultOperatorPostfix)
+    {
+        return strpos($name, ' ') === false ? "$name$defaultOperatorPostfix" : $name;
     }
 
     private function isAssoc($array)

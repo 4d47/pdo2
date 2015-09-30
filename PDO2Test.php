@@ -105,6 +105,9 @@ class PDO2Test extends PHPUnit_Framework_TestCase
         $values = array();
         $this->assertEquals('WHERE a = ?', $this->db->where(array('a' => 1, array()), $values));
         $this->assertEquals(array(1), $values);
+        $values = array();
+        $this->assertEquals('WHERE a IS NULL', $this->db->where(array('a' => null), $values));
+        $this->assertEquals(array(), $values);
     }
 
 }
